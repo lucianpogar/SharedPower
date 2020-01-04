@@ -5,30 +5,45 @@ from sharedpower.userinterface.ReturnToolsUI import ReturnToolsUI
 from sharedpower.userinterface.CreateAccountUI import CreateAccountUI
 
 class MenuUI :
-    def run(self) :
+    def __init__(self) :
+        self.login = LoginUI()
+        self.post_tools = PostToolsUI()
+        self.search_tools = SearchToolsUI()
+        self.return_tools = ReturnToolsUI()
+        self.create_account = CreateAccountUI()
+
+    def beforeLogin(self) :
         options = 'Choose your option:\n'
         options += '1. Login\n'
-        options += '2. Post tools\n'
-        options += '3. Search tools\n'
-        options += '4. Return tools\n'
-        options += '5. Create an account\n\n'
+        options += '2. Create an account\n\n'
 
         print('\nHi! Welcome to Shared Power\n')
         choice = input(options)
-        self.switch(choice)
-    
+        self.switchLogin(choice)
 
-    def switch(self, x) :
-        login = LoginUI()
-        post_tools = PostToolsUI()
-        search_tools = SearchToolsUI()
-        return_tools = ReturnToolsUI()
-        create_account = CreateAccountUI()
+    def afterLogin(self) :
+        options = 'Choose your option:\n'
+        options += '1. Post tools\n'
+        options += '2. Search tools\n'
+        options += '3. Return tools\n'
+
+        print('\nHi! Welcome to Shared Power\n')
+        choice = input(options)
+        self.switchLoggedin(choice)
+
+    def switchLoggedin(self, x) :
         switcher = {
-            '1' : login.run,
-            '2' : post_tools.run,
-            '3' : search_tools.run,
-            '4' : return_tools.run,
-            '5' : create_account.run
+            '1' : self.login.run,
+            '2' : self.post_tools.run,
+            '3' : self.search_tools.run,
+            '4' : self.return_tools.run,
+            '5' : self.create_account.run
+        }
+        return switcher.get(x)()
+
+    def switchLogin(self, x) :
+        switcher = {
+            '1' : self.login.run,
+            '2' : self.create_account.run
         }
         return switcher.get(x)()
